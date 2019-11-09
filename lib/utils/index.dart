@@ -90,14 +90,16 @@ String beautifyString(String str) {
   return str[0].toUpperCase() + str.substring(1);
 }
 
-String beautifyName(String str){
+String beautifyName(String str) {
+  if (str.length == 0) return str;
+  if (str.length == 1) return str[0].toUpperCase();
   List<String> n = str.split(' ');
-  for(int i=0;i<n.length;i++){
-    n[i] = n[i][0].toUpperCase() + n[i].substring(1);
+  for (int i = 0; i < n.length; i++) {
+    if (n[i].length > 1) n[i] = n[i][0].toUpperCase() + n[i].substring(1);
   }
   String nn = "";
-  for(int i=0;i<n.length;i++){
-    nn+=n[i]+' ';
+  for (int i = 0; i < n.length; i++) {
+    nn += n[i] + ' ';
   }
   return nn;
 }

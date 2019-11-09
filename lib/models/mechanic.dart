@@ -6,8 +6,9 @@ class Mechanic {
   final String name;
   final String mobile;
   final GeoFirePoint location;
+  final double distance;
 
-  Mechanic({this.id, this.name, this.mobile, this.location});
+  Mechanic({this.id, this.name, this.mobile, this.location,this.distance, });
 
   factory Mechanic.fromMap(Map data) {
     GeoPoint point = data['location']['geopoint'];
@@ -16,6 +17,7 @@ class Mechanic {
       name: data['name'] ?? '',
       mobile: data['mobile'] ?? '',
       location: GeoFirePoint(point.latitude, point.longitude),
+      distance :data['distance']
     );
   }
 

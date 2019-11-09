@@ -16,11 +16,11 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          builder: (context) => MechanicsRepository.instance(),
-        ),
-        ChangeNotifierProvider(
           builder: (context) => UserRepository.instance(),
         ),
+        ChangeNotifierProvider(
+          builder: (context) => MechanicsRepository.instance(),
+        )
       ],
       child: MyApp(),
     ),
