@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mechaniks/models/ticket.dart';
 
 String _getAddressPart(String part, {bool comma = true}) {
   if (part == null || part.length == 0) return "";
@@ -64,6 +65,18 @@ String monthIntToString(int m) {
     default:
       return '';
   }
+}
+
+Widget getTicketStatusWidget(Ticket ticket){
+  TextStyle style;
+  if(ticket.status.compareTo('pending')==0){
+    style = TextStyle(color: Colors.orange,fontSize: 16,fontWeight: FontWeight.w500);
+  }else if(ticket.status.compareTo('accepted')==0){
+    style = TextStyle(color: Colors.green,fontSize: 16,fontWeight: FontWeight.w500);
+  }else{
+    style = TextStyle(color: Colors.red,fontSize: 16,fontWeight: FontWeight.w500);
+  }
+  return Text('Status : ' + beautifyString(ticket.status),style: style,);
 }
 
 String toDateString(DateTime date) {

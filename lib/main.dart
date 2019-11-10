@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mechaniks/data/tickets_repository.dart';
 import 'package:mechaniks/data/user_repository.dart';
+import 'package:mechaniks/screens/tickets_page.dart';
 import 'package:mechaniks/utils/index.dart';
 import 'package:provider/provider.dart';
 import 'package:mechaniks/providers/connectivity_provider.dart';
@@ -20,6 +22,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           builder: (context) => MechanicsRepository.instance(),
+        ),
+        ChangeNotifierProvider(
+          builder: (context) => TicketsRepository.instance(),
         )
       ],
       child: MyApp(),
@@ -71,6 +76,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           '/login': (context) => LoginPage(),
           '/landing': (context) => Landing(),
           '/offline': (context) => OfflinePage(),
+          '/tickets': (context) => TicketsPage(),
         },
       ),
     );

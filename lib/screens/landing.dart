@@ -1,11 +1,14 @@
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mechaniks/data/mechanics_repository.dart';
+import 'package:mechaniks/data/tickets_repository.dart';
 import 'package:mechaniks/data/user_repository.dart';
 import 'package:mechaniks/models/mechanic.dart';
+import 'package:mechaniks/models/ticket.dart';
 import 'package:mechaniks/utils/index.dart';
 import 'package:mechaniks/widgets/mechaniks_map.dart';
 import 'package:provider/provider.dart';
@@ -99,28 +102,15 @@ class _LandingState extends State<Landing> {
       );
     }
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          showBottomSheet(
-            context: context,
-            builder: (context) {
-              return Container(
-                padding: EdgeInsets.all(16),
-                child: Slider(
-                  value: radius,
-                  onChanged: (value) {
-                    setState(() {
-                      radius = value;
-                    });
-                  },
-                ),
-              );
-            },
-          )
-        },
-        child: Icon(
-          Icons.settings,
-          color: Colors.white,
+      floatingActionButton: MaterialButton(
+        color: getPrimaryColor(),
+        shape: StadiumBorder(),
+        onPressed: () => {Navigator.of(context).pushNamed('/tickets')},
+        child: Text(
+          "Tickets",
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
       ),
       body: Stack(
@@ -134,6 +124,7 @@ class _LandingState extends State<Landing> {
           ),
           MechanicsList(
             mechanics: mechanics,
+            userlocation: currentLocation,
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
@@ -154,9 +145,6 @@ class _LandingState extends State<Landing> {
                         fontSize: 14,
                       ),
                     ),
-                    // Text(currentLocation.latitude.toString() +
-                    //     ' ' +
-                    //     currentLocation.longitude.toString()),
                   ],
                 ),
               ),
@@ -170,11 +158,13 @@ class _LandingState extends State<Landing> {
 
 class MechanicsList extends StatelessWidget {
   final List<Mechanic> mechanics;
+  final GeoFirePoint userlocation;
 
-  const MechanicsList({Key key, @required this.mechanics}) : super(key: key);
+  const MechanicsList(
+      {Key key, @required this.mechanics, @required this.userlocation})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print('building');
     Size size = MediaQuery.of(context).size * 0.9;
     return Container(
       margin: EdgeInsets.only(top: size.width),
@@ -229,7 +219,10 @@ class MechanicsList extends StatelessWidget {
                   )
                 else
                   for (int i = 0; i < mechanics.length; i++)
-                    MechanicView(mechanic: mechanics[i])
+                    MechanicView(
+                      mechanic: mechanics[i],
+                      userlocation: userlocation,
+                    )
               ],
             ),
           ),
@@ -243,9 +236,11 @@ class MechanicView extends StatefulWidget {
   const MechanicView({
     Key key,
     @required this.mechanic,
+    @required this.userlocation,
   }) : super(key: key);
 
   final Mechanic mechanic;
+  final GeoFirePoint userlocation;
 
   @override
   _MechanicViewState createState() => _MechanicViewState();
@@ -279,6 +274,8 @@ class _MechanicViewState extends State<MechanicView> {
 
   @override
   Widget build(BuildContext context) {
+    Mechanic mechanic = widget.mechanic;
+    FirebaseUser user = Provider.of<UserRepository>(context).user;
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade200),
@@ -337,9 +334,22 @@ class _MechanicViewState extends State<MechanicView> {
                   color: Colors.grey.shade500,
                 ),
                 MaterialButton(
-                  onPressed: () async {},
+                  onPressed: () async {
+                    Ticket ticket = Ticket(
+                        merchantlocation: mechanic.location,
+                        merchantname: mechanic.name,
+                        merchantphone: mechanic.mobile,
+                        username: user.displayName,
+                        userphone: user.phoneNumber,
+                        userlocation: widget.userlocation,
+                        uid: user.uid,
+                        mid: mechanic.id,
+                        status: 'pending');
+                    await Provider.of<TicketsRepository>(context)
+                        .addTicket(ticket);
+                  },
                   child: Text(
-                    "Make Reservation",
+                    "Create Ticket",
                     style: TextStyle(
                       color: Colors.blue,
                       fontSize: 16,
