@@ -91,17 +91,36 @@ class _LandingState extends State<Landing> {
 
       markers.add(
         Marker(
-            markerId: MarkerId(id),
-            position: LatLng(location.latitude, location.longitude),
-            icon: bitmapDescriptor ??
-                BitmapDescriptor.fromAsset('assets/icon/mechanic.png')),
+          markerId: MarkerId(id),
+          position: LatLng(location.latitude, location.longitude),
+          icon: bitmapDescriptor ??
+              BitmapDescriptor.fromAsset('assets/icon/mechanic.png'),
+        ),
       );
     }
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed('/add-mechanic'),
+        onPressed: () => {
+          showBottomSheet(
+            context: context,
+            builder: (context) {
+              return Container(
+                padding: EdgeInsets.all(16),
+                child: Slider(
+                  value: radius,
+                  onChanged: (value) {
+                    setState(() {
+                      radius = value;
+                    });
+                  },
+                ),
+              );
+            },
+          )
+        },
         child: Icon(
-          Icons.add,
+          Icons.settings,
+          color: Colors.white,
         ),
       ),
       body: Stack(
@@ -281,7 +300,7 @@ class _MechanicViewState extends State<MechanicView> {
                   ),
                 ),
                 Text(
-                  widget.mechanic.distance.toString()+' km',
+                  widget.mechanic.distance.toString() + ' km',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                   ),
@@ -318,10 +337,7 @@ class _MechanicViewState extends State<MechanicView> {
                   color: Colors.grey.shade500,
                 ),
                 MaterialButton(
-                  onPressed: () async {
-                    await Provider.of<MechanicsRepository>(context)
-                        .deleteMechanic(widget.mechanic);
-                  },
+                  onPressed: () async {},
                   child: Text(
                     "Make Reservation",
                     style: TextStyle(
