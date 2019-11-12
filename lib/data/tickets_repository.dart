@@ -5,6 +5,8 @@ import 'package:flutter/widgets.dart';
 import 'package:mechaniks/models/ticket.dart';
 import 'package:mechaniks/models/ticket.dart';
 
+
+//Data repository for tickets created by the user.
 class TicketsRepository extends ChangeNotifier {
   List<Ticket> tickets = [];
   Firestore _db;
@@ -23,6 +25,7 @@ class TicketsRepository extends ChangeNotifier {
     
   }
 
+  //Fetches the list of tickets created by the user. (Listens for changes in the user authentication state.)
   Future<void> _onAuthStateChanged(FirebaseUser user) async {
     if (user == null) {
     } else {
@@ -31,7 +34,7 @@ class TicketsRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-
+  //This listens for any change in the stream of tickets data 
   Future<void> _onTicketsDataChanged(QuerySnapshot snapshots) async {
     List<Ticket> m = [];
     List<DocumentSnapshot> docs = snapshots.documents;
@@ -41,11 +44,13 @@ class TicketsRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  //Creates a new ticket.
   Future<bool> addTicket(Ticket ticket) async {
     await _db.collection('tickets').add(ticket.toMapForFirestore());
     return true;
   }
 
+  //Deletes an already created ticket.
   Future<bool> deleteTicket(Ticket ticket) async {
     await _db.collection('tickets').document(ticket.id).delete();
     return true;

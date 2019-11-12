@@ -1,10 +1,10 @@
 # Details
 
-Date : 2019-11-09 22:37:44
+Date : 2019-11-10 13:01:47
 
 Directory e:\projects\mechaniks
 
-Total : 36 files,  2115 codes, 141 comments, 229 blanks, all 2485 lines
+Total : 38 files,  2397 codes, 125 comments, 256 blanks, all 2778 lines
 
 [summary](results.md)
 
@@ -32,15 +32,17 @@ Total : 36 files,  2115 codes, 141 comments, 229 blanks, all 2485 lines
 | [ios\Runner\Base.lproj\Main.storyboard](file:///e%3A/projects/mechaniks/ios/Runner/Base.lproj/Main.storyboard) | XML | 25 | 1 | 1 | 27 |
 | [ios\Runner\Runner-Bridging-Header.h](file:///e%3A/projects/mechaniks/ios/Runner/Runner-Bridging-Header.h) | C++ | 1 | 0 | 0 | 1 |
 | [lib\data\mechanics_repository.dart](file:///e%3A/projects/mechaniks/lib/data/mechanics_repository.dart) | Dart | 39 | 0 | 8 | 47 |
+| [lib\data\tickets_repository.dart](file:///e%3A/projects/mechaniks/lib/data/tickets_repository.dart) | Dart | 43 | 0 | 11 | 54 |
 | [lib\data\user_repository.dart](file:///e%3A/projects/mechaniks/lib/data/user_repository.dart) | Dart | 262 | 2 | 25 | 289 |
-| [lib\main.dart](file:///e%3A/projects/mechaniks/lib/main.dart) | Dart | 72 | 0 | 7 | 79 |
+| [lib\main.dart](file:///e%3A/projects/mechaniks/lib/main.dart) | Dart | 78 | 0 | 7 | 85 |
 | [lib\models\mechanic.dart](file:///e%3A/projects/mechaniks/lib/models/mechanic.dart) | Dart | 32 | 0 | 7 | 39 |
-| [lib\models\ticket.dart](file:///e%3A/projects/mechaniks/lib/models/ticket.dart) | Dart | 0 | 13 | 2 | 15 |
+| [lib\models\ticket.dart](file:///e%3A/projects/mechaniks/lib/models/ticket.dart) | Dart | 62 | 0 | 7 | 69 |
 | [lib\providers\connectivity_provider.dart](file:///e%3A/projects/mechaniks/lib/providers/connectivity_provider.dart) | Dart | 71 | 3 | 10 | 84 |
-| [lib\screens\landing.dart](file:///e%3A/projects/mechaniks/lib/screens/landing.dart) | Dart | 333 | 3 | 22 | 358 |
+| [lib\screens\landing.dart](file:///e%3A/projects/mechaniks/lib/screens/landing.dart) | Dart | 346 | 0 | 22 | 368 |
 | [lib\screens\login_page.dart](file:///e%3A/projects/mechaniks/lib/screens/login_page.dart) | Dart | 248 | 28 | 19 | 295 |
 | [lib\screens\offline_page.dart](file:///e%3A/projects/mechaniks/lib/screens/offline_page.dart) | Dart | 54 | 0 | 2 | 56 |
-| [lib\utils\index.dart](file:///e%3A/projects/mechaniks/lib/utils/index.dart) | Dart | 124 | 3 | 16 | 143 |
+| [lib\screens\tickets_page.dart](file:///e%3A/projects/mechaniks/lib/screens/tickets_page.dart) | Dart | 146 | 0 | 10 | 156 |
+| [lib\utils\index.dart](file:///e%3A/projects/mechaniks/lib/utils/index.dart) | Dart | 136 | 3 | 17 | 156 |
 | [lib\widgets\country_code_selector.dart](file:///e%3A/projects/mechaniks/lib/widgets/country_code_selector.dart) | Dart | 106 | 0 | 17 | 123 |
 | [lib\widgets\country_selection_dialog.dart](file:///e%3A/projects/mechaniks/lib/widgets/country_selection_dialog.dart) | Dart | 112 | 3 | 10 | 125 |
 | [lib\widgets\mechaniks_map.dart](file:///e%3A/projects/mechaniks/lib/widgets/mechaniks_map.dart) | Dart | 98 | 1 | 12 | 111 |

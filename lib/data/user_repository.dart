@@ -15,12 +15,14 @@ enum Status {
   LoadingUserInfo
 }
 
+
+//Class that handles user authentication.
 class UserRepository with ChangeNotifier {
-  FirebaseAuth _auth;
-  FirebaseUser _user;
+  FirebaseAuth _auth; // Firebase auth object
+  FirebaseUser _user; // Firebase user object
   bool loadingUserInfo;
   Firestore _db;
-  Status _status = Status.Uninitialized;
+  Status _status = Status.Uninitialized; // Status of authentication
   String message = "";
 
   String _verificationId;
@@ -35,105 +37,12 @@ class UserRepository with ChangeNotifier {
   Status get status => _status;
   FirebaseUser get user => _user;
 
-  Future<void> sendEmailVerificationLink(String email) async {
-    return await _auth.sendSignInWithEmailLink(
-      email: email,
-      url: 'https://www.underk.in/verify-email',
-      handleCodeInApp: true,
-      iOSBundleID: 'in.underk.underk-app',//TODO change bundeid
-      androidPackageName: 'in.underk.underk_app',
-      androidInstallIfNotAvailable: true,
-      androidMinimumVersion: "1",
-    );
-  }
-
-  Future<bool> linkEmailWithLink(String link) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String email = preferences.getString('verification_email');
-    if (email == null || email == "") return false;
-
-    AuthCredential credential =
-        EmailAuthProvider.getCredentialWithLink(email: email, link: link);
-    try {
-      await _user.linkWithCredential(credential);
-      await _user.reload();
-      _user = await _auth.currentUser();
-      notifyListeners();
-      showToast("Email verified!");
-      return true;
-    } on PlatformException catch (e) {
-      switch (e.code) {
-        case "ERROR_INVALID_CREDENTIAL":
-          message = "Invalid credential. Try again";
-          break;
-        case "ERROR_CREDENTIAL_ALREADY_IN_USE":
-          message = "Another account already exists with this email Id.";
-          break;
-        default:
-          message = "Some error occured. Try again later.";
-          break;
-      }
-      showToast(message);
-      return false;
-    }
-  }
-
-  Future<bool> signIn(String email, String password) async {
-    try {
-      _status = Status.Authenticating;
-      notifyListeners();
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return true;
-    } catch (e) {
-      _status = Status.Unauthenticated;
-      notifyListeners();
-      return false;
-    }
-  }
-
-  Future<bool> linkGoogleAccount() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-    GoogleSignInAccount googleUser;
-    GoogleSignInAuthentication googleAuth;
-    try {
-      googleUser = await googleSignIn.signIn();
-      googleAuth = await googleUser.authentication;
-    } catch (error) {
-      print(error);
-      showToast('Some Error Occurred');
-      return false;
-    }
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    try {
-      await _user.linkWithCredential(credential);
-      await _user.reload();
-      _user = await _auth.currentUser();
-      notifyListeners();
-      return true;
-    } on PlatformException catch (e) {
-      switch (e.code) {
-        case "ERROR_INVALID_CREDENTIAL":
-          message = "Invalid credential. Try again";
-          break;
-        case "ERROR_CREDENTIAL_ALREADY_IN_USE":
-          message = "Another account already exists with this email Id.";
-          break;
-        default:
-          message = "Some error occured. Try again later.";
-          break;
-      }
-      showToast(message);
-      return false;
-    }
-  }
-
+  //Handle sign in with google.
   Future<bool> signInWithGoogle() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
     GoogleSignInAccount googleUser;
     GoogleSignInAuthentication googleAuth;
+    //Try google authentication.
     try {
       googleUser = await googleSignIn.signIn();
       googleAuth = await googleUser.authentication;
@@ -141,10 +50,13 @@ class UserRepository with ChangeNotifier {
       print(error);
       return false;
     }
+    //Fetch sign in credentials from google auth.
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+
+    //Try firebase sign in.
     try {
       _status = Status.Authenticating;
       notifyListeners();
@@ -167,12 +79,14 @@ class UserRepository with ChangeNotifier {
     }
   }
 
+  //Handle phone number submission for authentication.
   Future<bool> verifyPhoneNumber(_phoneNumber) async {
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential phoneAuthCredential) {
       _auth.signInWithCredential(phoneAuthCredential);
     };
 
+    //On Verification failed.
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {
       message = authException.message;
@@ -180,17 +94,20 @@ class UserRepository with ChangeNotifier {
       notifyListeners();
     };
 
+    //On Code sent.
     final PhoneCodeSent codeSent =
         (String verificationId, [int forceResendingToken]) async {
       _status = Status.CodeSent;
       notifyListeners();
     };
 
+    //Automatic code retrieval timeout.
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String verificationId) {
       _verificationId = verificationId;
     };
 
+    //Try phone number verification. Send OTP.
     try {
       _status = Status.Authenticating;
       notifyListeners();
@@ -209,6 +126,7 @@ class UserRepository with ChangeNotifier {
     }
   }
 
+  //Submit OTP and try authentication.
   Future<bool> signInWithPhoneNumber(_smsCode) async {
     final AuthCredential credential = PhoneAuthProvider.getCredential(
       verificationId: _verificationId,
@@ -239,6 +157,7 @@ class UserRepository with ChangeNotifier {
     }
   }
 
+  //Sign out.
   Future signOut() async {
     _auth.signOut();
     _status = Status.Unauthenticated;
@@ -246,6 +165,7 @@ class UserRepository with ChangeNotifier {
     return Future.delayed(Duration.zero);
   }
 
+  //Listen for authentication status change.
   Future<void> _onAuthStateChanged(FirebaseUser firebaseUser) async {
     if (firebaseUser == null) {
       _status = Status.Unauthenticated;
@@ -256,33 +176,4 @@ class UserRepository with ChangeNotifier {
     notifyListeners();
   }
 
-
-  Future<void> setDisplayName(String displayName) async {
-    UserUpdateInfo userUpdateInfo = UserUpdateInfo();
-    userUpdateInfo.displayName = displayName;
-    await _user.updateProfile(userUpdateInfo);
-    await _user.reload();
-    _user = await _auth.currentUser();
-    notifyListeners();
-  }
-
-  Future<void> setEmail(String email) async {
-    try {
-      await _user.updateEmail(email);
-      await _user.reload();
-      await _user.sendEmailVerification();
-      _user = await _auth.currentUser();
-      notifyListeners();
-    } catch (e) {
-      //TODO handle exception for email already in use
-      //TODO handle exception for recent sign in
-      print(e);
-    }
-  }
-
-
-  Future<void> sendEmailVerification() async {
-    await _user.sendEmailVerification();
-    notifyListeners();
-  }
 }

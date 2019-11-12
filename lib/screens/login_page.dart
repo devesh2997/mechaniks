@@ -8,6 +8,8 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
+
+//Screen handling User authentication.
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -41,6 +43,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+
+//Widget for showing sign in options.
 class SignInSection extends StatefulWidget {
   SignInSection();
   @override

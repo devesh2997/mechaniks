@@ -19,6 +19,8 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'dart:async';
 import 'dart:ui' as ui;
 
+
+//Homepage for authenticated user.
 class Landing extends StatefulWidget {
   @override
   _LandingState createState() => _LandingState();
@@ -40,15 +42,10 @@ class _LandingState extends State<Landing> {
     radius = 2;
     currentLocation = GeoFirePoint(0, 0);
     initLocation();
-    buildMechanicMarkerIcon();
   }
 
-  Future<void> buildMechanicMarkerIcon() async {
-    final Uint8List markerIcon =
-        await getBytesFromAsset('assets/icon/mechanic.png', 75);
-    bitmapDescriptor = BitmapDescriptor.fromBytes(markerIcon);
-  }
 
+  //Initialise current user location.
   Future<void> initLocation() async {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
@@ -59,6 +56,7 @@ class _LandingState extends State<Landing> {
     });
   }
 
+  //Update current location.
   Future<void> updatecurrentLocation(double latitude, double longitude) async {
     try {
       setState(() {
@@ -71,15 +69,6 @@ class _LandingState extends State<Landing> {
     }
   }
 
-  Future<Uint8List> getBytesFromAsset(String path, int width) async {
-    ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
-        targetWidth: width);
-    ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
-        .buffer
-        .asUint8List();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +80,7 @@ class _LandingState extends State<Landing> {
     for (int i = 0; i < mechanics.length; i++) {
       GeoFirePoint location = mechanics[i].location;
       String id = mechanics[i].name;
-
+      //add mechanic markers to map.
       markers.add(
         Marker(
           markerId: MarkerId(id),
@@ -156,6 +145,8 @@ class _LandingState extends State<Landing> {
   }
 }
 
+
+//Widget for showing the list of nearby mechanics.
 class MechanicsList extends StatelessWidget {
   final List<Mechanic> mechanics;
   final GeoFirePoint userlocation;

@@ -8,6 +8,7 @@ import 'package:mechaniks/utils/index.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//Widget showing the list of tickets.
 class TicketsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -74,6 +75,8 @@ class TicketsPage extends StatelessWidget {
   }
 }
 
+
+//Widget for individual ticket item.
 class TicketItem extends StatefulWidget {
   final Ticket ticket;
 

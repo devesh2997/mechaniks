@@ -1,17 +1,17 @@
 # Summary
 
-Date : 2019-11-09 22:37:44
+Date : 2019-11-10 13:01:47
 
 Directory e:\projects\mechaniks
 
-Total : 36 files,  2115 codes, 141 comments, 229 blanks, all 2485 lines
+Total : 38 files,  2397 codes, 125 comments, 256 blanks, all 2778 lines
 
 [details](details.md)
 
 ## Languages
 | language | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| Dart | 15 | 1,593 | 66 | 166 | 1,825 |
+| Dart | 17 | 1,875 | 50 | 193 | 2,118 |
 | JSON | 3 | 230 | 0 | 2 | 232 |
 | XML | 8 | 106 | 26 | 9 | 141 |
 | Groovy | 3 | 96 | 3 | 22 | 121 |
@@ -24,7 +24,7 @@ Total : 36 files,  2115 codes, 141 comments, 229 blanks, all 2485 lines
 ## Directories
 | path | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| . | 36 | 2,115 | 141 | 229 | 2,485 |
+| . | 38 | 2,397 | 125 | 256 | 2,778 |
 | android | 11 | 233 | 28 | 32 | 293 |
 | android\app | 7 | 185 | 27 | 20 | 232 |
 | android\app\src | 5 | 44 | 24 | 7 | 75 |
@@ -44,12 +44,12 @@ Total : 36 files,  2115 codes, 141 comments, 229 blanks, all 2485 lines
 | ios\Runner\Assets.xcassets\AppIcon.appiconset | 1 | 122 | 0 | 1 | 123 |
 | ios\Runner\Assets.xcassets\LaunchImage.imageset | 2 | 26 | 0 | 3 | 29 |
 | ios\Runner\Base.lproj | 2 | 61 | 2 | 2 | 65 |
-| lib | 14 | 1,579 | 56 | 159 | 1,794 |
-| lib\data | 2 | 301 | 2 | 33 | 336 |
-| lib\models | 2 | 32 | 13 | 9 | 54 |
+| lib | 16 | 1,861 | 40 | 186 | 2,087 |
+| lib\data | 3 | 344 | 2 | 44 | 390 |
+| lib\models | 2 | 94 | 0 | 14 | 108 |
 | lib\providers | 1 | 71 | 3 | 10 | 84 |
-| lib\screens | 3 | 635 | 31 | 43 | 709 |
-| lib\utils | 1 | 124 | 3 | 16 | 143 |
+| lib\screens | 4 | 794 | 28 | 53 | 875 |
+| lib\utils | 1 | 136 | 3 | 17 | 156 |
 | lib\widgets | 4 | 344 | 4 | 41 | 389 |
 | test | 1 | 14 | 10 | 7 | 31 |
 

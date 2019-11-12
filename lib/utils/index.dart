@@ -3,6 +3,7 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mechaniks/models/ticket.dart';
 
+//Get individual address part string, ending with comma or not.
 String _getAddressPart(String part, {bool comma = true}) {
   if (part == null || part.length == 0) return "";
   if (comma) {
@@ -12,6 +13,8 @@ String _getAddressPart(String part, {bool comma = true}) {
   }
 }
 
+
+//Returns address from placemark
 String placemarkAddress(Placemark placemark) {
   String add = "";
   add += _getAddressPart(placemark.name);
@@ -25,6 +28,8 @@ String placemarkAddress(Placemark placemark) {
   return add;
 }
 
+
+//Get placemark from GeoFirePoint (convert LatLong to placemark object)
 Future<String> getAddressFromGeoFirePoint(GeoFirePoint point) async {
   try {
     List<Placemark> placemarks =
@@ -36,37 +41,7 @@ Future<String> getAddressFromGeoFirePoint(GeoFirePoint point) async {
   }
 }
 
-String monthIntToString(int m) {
-  switch (m) {
-    case 1:
-      return 'January';
-    case 2:
-      return 'February';
-    case 3:
-      return 'March';
-    case 4:
-      return 'April';
-    case 5:
-      return 'May';
-    case 6:
-      return 'June';
-    case 7:
-      return 'July';
-    case 8:
-      return 'August';
-    case 9:
-      return 'September';
-    case 10:
-      return 'October';
-    case 11:
-      return 'November';
-    case 12:
-      return 'December';
-    default:
-      return '';
-  }
-}
-
+//Widget showing the status for a ticket
 Widget getTicketStatusWidget(Ticket ticket){
   TextStyle style;
   if(ticket.status.compareTo('pending')==0){
@@ -79,16 +54,8 @@ Widget getTicketStatusWidget(Ticket ticket){
   return Text('Status : ' + beautifyString(ticket.status),style: style,);
 }
 
-String toDateString(DateTime date) {
-  String d = "";
-  d += date.day.toString() +
-      ' ' +
-      monthIntToString(date.month) +
-      ' ' +
-      date.year.toString();
-  return d;
-}
 
+//Get hex code from hex string.
 int _getColorFromHex(String hexColor) {
   hexColor = hexColor.toUpperCase().replaceAll("#", "");
   if (hexColor.length == 6) {
@@ -97,12 +64,14 @@ int _getColorFromHex(String hexColor) {
   return int.parse(hexColor, radix: 16);
 }
 
+//Capitalise first letter of string
 String beautifyString(String str) {
   if (str.length == 0) return str;
   if (str.length == 1) return str[0].toUpperCase();
   return str[0].toUpperCase() + str.substring(1);
 }
 
+//Capitalise each word in the name string.
 String beautifyName(String str) {
   if (str.length == 0) return str;
   if (str.length == 1) return str[0].toUpperCase();
@@ -117,10 +86,13 @@ String beautifyName(String str) {
   return nn;
 }
 
+//Get rupee symbol
 String getRupee() {
   return '\u20B9';
 }
 
+
+//Custom Hexcolor class
 class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
@@ -142,10 +114,13 @@ MaterialColor hexToMaterialColor(final String hexColor) {
   return MaterialColor(_getColorFromHex(hexColor), color);
 }
 
+
+//Get Primary MaterialColor of the app.
 MaterialColor getPrimaryColor() {
   return Colors.orange;
 }
 
+//Get Accent color of the app.
 MaterialColor getAccentColor() {
   return hexToMaterialColor('#2952FF');
 }

@@ -3,6 +3,8 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mechaniks/models/mechanic.dart';
 
+
+//Data repository for mechanics in the system
 class MechanicsRepository extends ChangeNotifier {
   List<Mechanic> mechanics = [];
   Firestore _db;
@@ -16,6 +18,7 @@ class MechanicsRepository extends ChangeNotifier {
     geo = Geoflutterfire();
   }
 
+  //Update the list of nearby mechanics given the user location and search radius
   updateMechaniks(GeoFirePoint center, double radius) {
     if(center == null)return;
     print(center.latitude.toString()+' '+center.longitude.toString());
@@ -26,6 +29,7 @@ class MechanicsRepository extends ChangeNotifier {
         .listen(_onMechanicsDataChanged);
   }
 
+  //This listens for any change in the stream of mechanics data 
   Future<void> _onMechanicsDataChanged(List<DocumentSnapshot> snapshots) async {
     List<Mechanic> m = [];
     snapshots.forEach((doc) => m.add(Mechanic.fromFirestore(doc)));
@@ -34,13 +38,4 @@ class MechanicsRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> addMechanic(Mechanic mechanic) async {
-    await _db.collection('mechanics').add(mechanic.toMapForFirestore());
-    return true;
-  }
-
-  Future<bool> deleteMechanic(Mechanic mechanic) async {
-    await _db.collection('mechanics').document(mechanic.id).delete();
-    return true;
-  }
 }
